@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+    <div class="responsesMainText">
+        <span>Ваши отклики</span>
+    </div>
+
+    {% if responses %}
+    <div class="responsesMainBlock">
+        <div class="tabs">
+            <button class="redirect-button tab-button active" data-tab="all">Все</button>
+            <button class="redirect-button tab-button" data-tab="invitation">Приглашение</button>
+            <button class="redirect-button tab-button" data-tab="rejection">Отказ</button>
+            <button class="redirect-button tab-button" data-tab="pending">На рассмотрении</button>
+            <button class="redirect-button tab-button" data-tab="archived">Удаленные</button>
+        </div>
+        <div class="tab-content">
+        {% for response, vacancy, company in responses %}
+                <div class="responsesCard" data-tab="all {% if response.status == 1 %}invitation{% elif response.status == 2 %}rejection{% elif response.status == 3 %}archived{% else %}pending{% endif %}">
+                        <div class="responsesCardContent">
+                            <div class="responsesTitle">
+                                <a class="responsesTitleLink" href="/vacancies/{{vacancy.id}}">
+                                    <span>{{ vacancy.title }}</span>
+                                </a>
+                                <span class="status-badge">
+                                    {% if response.status == 1 %}
+                                      приглашение
+                                    {% elif response.status == 2 %}
+                                      отказ
+                                    {% elif response.status == 3 %}
+                                      удалено
+                                    {% else %}
+                                      на рассмотрении
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <span>{{ company.title }}</span>
+                            <span>{{ format_date(response.created) }}</span>
+
+                            <div class="response-actions">
+                                <form method="POST" action="{{ url_for('responses.update_response_status') }}" class="d-inline">
+                                <input type="hidden" name="vacancy_id" value="{{ response.vacancyId }}">
+                                <input type="hidden" name="user_id" value="{{ response.userId }}">
+                                <input type="hidden" name="new_status" value="{{ 3 if response.status != 3 else 0 }}">
+
+                                <button type="submit" class="responses-delete-button btn {% if response.status == 3 %}btn-success{% else %}btn-danger{% endif %}">
+                                  {% if response.status == 3 %}
+                                    Восстановить
+                                  {% else %}
+                                    Удалить
+                                  {% endif %}
+                                </button>
+                              </form>
+                          </div>
+                        </div>
+                    </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="responsesEmptyBlock">
+        <span>Здесь будут находиться ваши отклики. <br> Откликайтесь на вакансии, так больше шансов найти работу!</span>
+        <a href="/vacancies" class="redirect-button">Искать вакансии</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Удаляем активный класс у всех кнопок
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      // Добавляем активный класс текущей кнопке
+      this.classList.add('active');
+
+      const tabName = this.getAttribute('data-tab');
+      const cards = document.querySelectorAll('.responsesCard');
+
+      cards.forEach(card => {
+        if (tabName === 'all') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = card.getAttribute('data-tab').includes(tabName) ? 'block' : 'none';
+        }
+      });
+    });
+  });
+});
+</script>
+
+{% endblock %}

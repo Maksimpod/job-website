@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Мои резюме {% endblock %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="font-size: 1.7rem;">Мои резюме</h2>
+          {% if not resumes %}
+          <a class="redirect-button" href="{{ url_for('resume.createResumePageRoute') }}">Создать резюме</a>
+          {% endif %}
+    </div>
+    <div class="resumesMainBlock">
+      <div class="resumesListBlock">
+        {% for resume in resumes %}
+          <div class="resumeCard" style="cursor: default;">
+            <div class="resumeCardContent">
+              <a href="{{ url_for('resume.resumePageRoute', resumeId = resume.id) }}">
+              <span class="resumeCardTitle">{{ resume.position }}</span>
+                        </a>
+              <span class="resumeCardTitle" style="font-size: 1rem;">Обновлено {{ utility.format_date(resume.created) }}</span>
+              <div style="display: flex; gap: 15px;">
+              <a class="edit-button" href="{{ url_for('resume.editResumePageRoute', resumeId = resume.id) }}">Редактировать</a>
+                <form method="POST" action="{{ url_for('resume.delete_resume', resumeId=resume.id) }}"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить это резюме?');"
+                      style="display: inline;">
+                  <input type="hidden"/>
+                  <button type="submit" class="edit-button">Удалить</button>
+                </form>
+                </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

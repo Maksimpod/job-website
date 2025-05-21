@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div class="vacancyTitle">
+    <h1>{% block title %} {{ vacancyResult['vacancy']['title'] }} {% endblock %}</h1>
+  </div>
+  <div>
+    {% if vacancyResult['vacancy']['location'] %}
+    {{ vacancyResult['vacancy']['location'] }} |
+    {% endif %}
+
+    {% if vacancyResult['vacancy']['experience'] %}
+    Опыт от {{ vacancyResult['vacancy']['experience'] }} лет |
+    {% endif %}
+    Обновлено {{ vacancyResult['vacancy']['created'].strftime('%d.%m') }}
+  </div>
+
+  <div class="vacancySalary">
+    {% if vacancyResult['vacancy']['salary']['from'] %}
+    <span>от {{ vacancyResult['vacancy']['salary']['from']|int }} ₽</span>
+    {% endif %}
+    {% if vacancyResult['vacancy']['salary']['to'] %}
+    <span>до {{ vacancyResult['vacancy']['salary']['to']|int }} ₽</span>
+    {% endif %}
+  </div>
+
+  {% if vacancyResult['company'] %}
+  <a href="{{ url_for('companies.companyPageRoute', companyId = vacancyResult['company']['id']) }}">
+    <div class="companyTitle">{{ vacancyResult['company']['title'] }}</div>
+  </a>
+  {% endif %}
+  <div class="responseBlock">
+    {% if not has_responded and current_user.roleId == 3 %}
+  <form id="responseForm" method="POST" action="{{ url_for('vacancies.vacancy_response', vacancyId=vacancyResult['vacancy']['id']) }}">
+    <button type="submit" class="response-button">Откликнуться</button>
+  </form>
+    {% elif current_user.roleId == 3 %}
+    <span class="response-text">Вы уже откликнулись на эту вакансию</span>
+    {% endif %}
+</div>
+
+  <hr class="vacancyHr" />
+  <div class="vacancyDescription">
+    {% autoescape false %}
+    {{ vacancyResult['vacancy']['description'] }}
+    {% endautoescape %}
+  </div>
+
+
+</div>
+{% endblock %}

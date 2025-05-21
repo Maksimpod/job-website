@@ -1,0 +1,36 @@
+{% extends 'blankbase.html' %}
+
+{% block content %}
+<div class="registerWrap registerBox">
+    <div class="formBox">
+        <a class="back-button" href="/">Назад</a>
+      <h1>Вход</h1>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="regErrorMessage">
+              {% for message in messages %}
+                <li style="color: red;">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p class="fieldsMargin">
+              {{ form.email(size=32, class="form-field") }}<br>
+              {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.password(size=32, class="form-field") }}<br>
+              {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p>{{ form.submit(class="submit-button") }}</p>
+        </form>
+        <span>Нет аккаунта? <a href="/register">Зарегестрироваться</a></span>
+    </div>
+</div>
+{% endblock %}

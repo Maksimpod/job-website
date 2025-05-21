@@ -1,0 +1,102 @@
+.topMenu {
+  max-width: 1100px;
+  margin: auto;
+  user-select: none;
+  position: relative;
+}
+
+.topMenu .logo {
+  float: left;
+  display: block;
+  margin: 10px auto;
+  width: 40px;
+  height: 40px;
+  background: url('/images/appIcon.png') no-repeat center / contain transparent;
+}
+
+.topMenu .userPhoto {
+  float: right;
+  display: block;
+  margin: 10px auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: url('/images/userPhoto.png') no-repeat center / contain transparent;
+}
+
+.topMenu .loginButton {
+  float: right;
+  display: block;
+  margin: 10px auto;
+  height: 40px;
+  align-content: center;
+}
+
+.topMenu a {
+  color: var(--top-menu-anchor);
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.topMenu a.active {
+  color: var(--top-menu-anchor-active);
+  padding-bottom: 16px;
+  border-bottom: 3px solid var(--top-menu-anchor-active-decoration);
+}
+
+.topMenu a.disabled {
+  pointer-events: none;
+}
+
+.topMenu a:hover:not(.active) {
+  color: var(--top-menu-anchor-active);
+}
+
+.topMenu li {
+  float: left;
+  display: block;
+  margin: 0 20px;
+  padding: 20px 0;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  padding: 8px 0;
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  color: var(--top-menu-anchor) !important;
+  text-decoration: underline;
+}
+
+.divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 4px 0;
+}

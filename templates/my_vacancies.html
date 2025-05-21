@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Мои вакансии {% endblock %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="font-size: 1.7rem;">Мои вакансии</h2>
+          {% if company %}
+          <a class="redirect-button" href="{{ url_for('vacancies.createVacancyPageRoute') }}">Создать вакансию</a>
+          {% else %}
+          <a class="redirect-button" href="{{ url_for('companies.createCompanyPageRoute') }}">Создать компанию</a>
+          {% endif %}
+    </div>
+    {% if vacancies %}
+    <div class="resumesMainBlock">
+      <div class="resumesListBlock">
+        {% for vacancyResult in vacancies %}
+          <div class="resumeCard" style="cursor: default;">
+            <div class="resumeCardContent">
+              <a href="{{ url_for('vacancies.vacancyPageRoute', vacancyId = vacancyResult['vacancy']['id']) }}">
+              <span class="resumeCardTitle">{{ vacancyResult['vacancy']['title'] }}</span>
+                        </a>
+              <span class="resumeCardTitle" style="font-size: 1rem;">Обновлено {{ utility.format_date(vacancyResult['vacancy']['created']) }}</span>
+              <div style="display: flex; gap: 15px;">
+              <a class="edit-button" href="{{ url_for('vacancies.editVacancyPageRoute', vacancyId = vacancyResult['vacancy']['id']) }}">Редактировать</a>
+                <form method="POST" action="{{ url_for('vacancies.delete_vacancy', vacancyId=vacancyResult['vacancy']['id']) }}"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить эту вакансию?');"
+                      style="display: inline;">
+                  <input type="hidden"/>
+                  <button type="submit" class="edit-button">Удалить</button>
+                </form>
+                </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+      <br />
+    {% autoescape false %}
+    <div>{{ page_numerator }}</div>
+    {% endautoescape %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

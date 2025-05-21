@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="resumeBox">
+    <div class="resumeFormBox">
+      <h2>Основная информация</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="regErrorMessage">
+              {% for message in messages %}
+                <li style="color: red;">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p class="fieldsMargin">
+              {{ form.title(size=32, class="form-field") }}<br>
+              {% for error in form.title.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.location(size=32, class="form-field form-field-label") }}<br>
+              {% for error in form.location.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.experience(size=32, class="form-field exp-input") }}<br>
+            </p>
+            <p class="fieldsMargin yearsMargin">
+              {{ form.salaryfrom(class="form-field salary-input") }} {{ form.salaryto(class="form-field salary-input") }}<br>
+            </p>
+            {% if form.salaryfrom.errors or form.salaryto.errors %}
+                {% for error in form.salaryfrom.errors %}
+                    <span style="color: red;">[{{ error }}]</span> <br>
+                {% endfor %}
+            {% endif %}
+            <p class="fieldsMargin checkField">
+                {{ form.wformat.label(class="fieldsMargin") }}<br>
+            </p>
+            <p class="fieldsMargin checkField">
+              {{ form.place }} {{ form.place.label(class="actual-label") }}<br>
+            </p>
+            <p class="fieldsMargin checkField">
+              {{ form.remote }} {{ form.remote.label(class="actual-label") }}<br>
+            </p>
+            <p class="fieldsMargin checkField">
+              {{ form.hybrid }} {{ form.hybrid.label(class="actual-label") }}<br>
+            </p>
+            <p class="fieldsMargin checkField">
+              {{ form.moving }} {{ form.moving.label(class="actual-label") }}<br>
+            </p>
+            <hr class="resumeHr">
+
+            <h2>Описание вакансии</h2>
+            <div>
+                <p class="fieldsMargin">
+                    {{ form.description(class="form-field textArea") }} <br>
+                </p>
+                {% for error in form.description.errors %}
+                    <span style="color: red;">[{{ error }}]</span> <br>
+                {% endfor %}
+            </div>
+
+            <p>{{ form.submit(class="submit-button") }}</p>
+        </form>
+    </div>
+</div>
+<script>
+    document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('textArea')) {
+    autoResizeTextarea(event.target);
+  }
+});
+
+function autoResizeTextarea(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+  textarea.style.overflowY = textarea.scrollHeight > 300 ? 'auto' : 'hidden';
+}
+
+function validateSalaryInput(input) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+  if (input.value.length > 7) input.value = input.value.slice(0, 7);
+  const number = parseInt(input.value) || 0;
+  if (number > 1000000) input.value = 1000000;
+}
+
+document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('salary-input')) {
+    validateSalaryInput(event.target);
+  }
+});
+
+function validateExpInput(input) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+  if (input.value.length > 2) input.value = input.value.slice(0, 2);
+  const number = parseInt(input.value) || 0;
+  if (number > 10) input.value = 10;
+}
+document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('exp-input')) {
+    validateExpInput(event.target);
+  }
+});
+</script>
+{% endblock %}
+

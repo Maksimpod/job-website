@@ -1,0 +1,19 @@
+:root {
+  --top-menu-background: #212121;
+  --top-menu-anchor: #999999;
+  --top-menu-anchor-active: #EEEEEE;
+  --top-menu-anchor-active-decoration: #C51700;
+
+  --body-background: #4C444C;
+
+  --action-color: #FF4422;
+  --action-color-hover: #009F00;
+
+  --content-wrap-color: #1D1D1D;
+  --content-wrap-background: #FFFFFF;
+
+  --bottom-footer-background: #131313;
+  --bottom-footer-text-color: #666666;
+  --bottom-menu-anchor: #999999;
+  --bottom-menu-anchor-active: #EEEEEE;
+}

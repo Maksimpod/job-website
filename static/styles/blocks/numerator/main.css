@@ -1,0 +1,44 @@
+:root {
+  --numerator-color: #CCCCCC;
+  --numerator-background: #FFFFFF;
+  --numerator-hover-color: #FFFFFF;
+  --numerator-hover-background: #212121;
+  --numerator-hover-border-color: #E6E6E6;
+  --numerator-active-color: #636363;
+  --numerator-active-background: #F9F9F9;
+  --numerator-active-border-color: #C6C6C6;
+}
+
+.numeratorBlock {
+  padding: 10px 0px;
+}
+
+.numerator a:link,
+.numerator a:visited,
+.numerator a:hover,
+.numerator a:active {
+  text-decoration: none;
+  padding: 3px 6px;
+  color: var(--numerator-active-color);
+  background: var(--numerator-active-background);
+  border: 1px solid var(--numerator-active-border-color);
+}
+
+.numerator a:hover {
+  color: var(--numerator-hover-color);
+  background: var(--numerator-hover-background);
+  border-color: var(--numerator-hover-border-color);
+}
+
+.numerator span {
+  text-decoration: none;
+  padding: 3px 6px;
+  color: var(--numerator-color);
+  background: var(--numerator-background);
+  border: 1px solid var(--numerator-border-color);
+}
+
+.numerator a,
+.numerator span {
+  margin: 0 4px 0 0;
+}

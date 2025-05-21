@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %} Резюме {{ resume.position }} {% endblock %}
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div class="resumeHeader">
+  <div class="resumeIcon">
+    <div class="userPhoto"></div>
+  </div>
+  <div class="resumeSubHeader">
+    <div class="resumeSubMain">
+    <h1>{{ resume.position }}</h1>
+    {% if resume.salaryFrom %}
+    <span>{{ resume.salaryFrom|int  }} ₽</span>
+    {% else %}
+    <span>По договорённости</span>
+    {% endif %}
+    </div>
+    {% if bdate %}
+    <div>
+    {% if user.gender == "M" %}
+        <span>Мужчина, {{ bdate }}{% if user.city %}, {{user.city}} {% endif %}</span>
+    {% elif user.gender == "F" %}
+        <span>Женщина, {{ bdate }}{% if user.city %}, {{user.city}} {% endif %}</span>
+    {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  </div>
+  <div class="resumeExtraInfo">
+  <div class="resumeCitizenshipBlock">
+    <div class="resumeCitizenship">
+    <span>Гражданство</span>
+    </div>
+    <div>
+    <span>{{ country }}</span>
+    </div>
+  </div>
+  <div class="resumeCitizenshipBlock">
+    <div class="resumeCitizenship">
+    <span>Контакты</span>
+    </div>
+    <div class="contacts-info">
+    {% if contacts_visible %}
+      <span>{{ user_telephone }}, {{ user_email }}</span>
+    {% else %}
+      <span>Телефон, почта</span>
+    {% endif %}
+    </div>
+  </div>
+  <div class="showContacts">
+   {% if current_user.is_authenticated and current_user.roleId == 3 %}
+    <span>Контакты доступны только работодателям</span>
+  {% endif %}
+    {% if current_user.roleId != 3 %}
+    <form id="contactsForm">
+    <input type="hidden" name="resume_id" value="{{ resume.id }}">
+    <button
+      type="button"
+      id="contactsButton"
+      class="add-workplace-button"
+    >Показать контакты
+    </button>
+    {% endif %}
+  </form>
+    </div>
+  </div>
+  <hr class="resumeHr">
+
+  <div class="resumeExp">
+    <h2>Опыт работы {% if years %}{{ years }}{%else%}отсутствует{% endif %}</h2>
+    {% if workplaces %}
+    {% for workplace in workplaces %}
+    <div class="resumeWorkplace">
+      <h3>{{ workplace.specialisation }}</h3>
+      <p>{{ workplace.title }}</p>
+      <p>{{ workplace.position }} ({{ workplace.beginYear }} – {% if not workplace.endYear %}настоящее время{% else %}{{ workplace.endYear }}{% endif %})</p>
+      <p>{{ workplace.description }}</p>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="resumeWorkplace">
+      <p>Отсутствует</p>
+    </div>
+    {% endif %}
+  </div>
+  {% if educations %}
+  <hr class="resumeHr">
+  <div class="resumeEducations">
+    <h2>Образование</h2>
+    {% for education in educations %}
+    <div class="resumeEdu">
+      <h3>{{ education.title }} ({{ education.endYear }})</h3>
+      <p>{{ education.specialisation }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if skills %}
+  <hr class="resumeHr">
+  <div class="resumeSkills">
+    <h2>Навыки</h2>
+    <div class="resumeSkillList">
+      {% for skill in skills %}
+      <div class="resumeSkill">
+        <span>{{ skill.title }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if resume.about %}
+  <hr class="resumeHr">
+  <div class="resumeAbout">
+    <h2>Обо мне</h2>
+    <span style="white-space: pre-line;">{{ resume.about }}</span>
+  </div>
+  {% endif %}
+</div>
+<script>
+document.getElementById('contactsButton').addEventListener('click', async function() {
+  {% if not current_user.is_authenticated %}
+    window.location.href = "{{ url_for('account.loginPageRoute') }}";
+  {% else %}
+    const contactsInfo = document.querySelector('.contacts-info');
+    const isContactsVisible = contactsInfo.innerHTML.includes('@'); // Проверяем, отображены ли контакты
+
+    if (isContactsVisible) {
+      // Если контакты видны - просто скрываем их (без запроса на сервер)
+      contactsInfo.innerHTML = '<span>Телефон, почта</span>';
+      this.textContent = 'Показать контакты';
+      return;
+    }
+
+    // Только при показе контактов делаем запрос на сервер
+    try {
+      const formData = new FormData(document.getElementById('contactsForm'));
+
+      const response = await fetch("{{ url_for('resume.toggle_contacts') }}", {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.redirect) {
+        window.location.href = data.redirect;
+      } else {
+        contactsInfo.innerHTML = `
+          <span>${data.telephone || 'Телефон не указан'}, ${data.email || 'Email не указан'}</span>
+        `;
+        this.textContent = 'Скрыть контакты';
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
+  {% endif %}
+});
+</script>
+{% endblock %}

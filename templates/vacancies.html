@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %} Вакансии {% endblock %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div>
+    <div class="resultsHeaderBlock">
+      <div class="resultsCountBlock">
+        <h2>Найдено {{ total_vacancies }} вакансий</h2>
+      </div>
+      <div class="searchBlock">
+        <form method="get" style="display: flex;">
+          <input name="search" placeholder="" value="{{ search_text }}" />
+          <button type="submit">Искать</button>
+        </form>
+      </div>
+      <div class="clear"></div>
+      <hr noshade size="1" style="margin: 0;">
+      <div class="resultsSortingBlock">
+        <div class="resultsSort">
+          <span>Сортировать:</span>
+          <div class="sorting-selector">
+            <button class="sorting-button" id="sorting-toggle">
+              <span class="selected-option">
+                {% if current_sort == 'date' %}по дате
+                {% elif current_sort == 'salary' %}по зарплате
+                {% endif %}
+              </span>
+              <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="sorting-dropdown" id="sorting-dropdown">
+              <a href="?sort=date" class="sorting-option {% if current_sort == 'date' %}active{% endif %}">по дате</a>
+              <a href="?sort=salary" class="sorting-option {% if current_sort == 'salary' %}active{% endif %}">по зарплате</a>
+            </div>
+          </div>
+        </div>
+        <div class="sort-order-toggle">
+          <button class="sort-order-button" id="sort-order-btn" aria-label="Порядок сортировки">
+            <span class="sort-icon"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="vacanciesMainBlock">
+      <div class="vacanciesListBlock">
+        {% for vacancyResult in vacancies %}
+        <a href="{{ url_for('vacancies.vacancyPageRoute', vacancyId = vacancyResult['vacancy']['id']) }}">
+          <div class="vacancyCard">
+            <div class="vacancyCardContent">
+              <span class="vacancyCardTitle">{{ vacancyResult['vacancy']['title'] }}</span>
+              <span>
+                {% if vacancyResult['vacancy']['experience'] %}
+                Опыт от {{ vacancyResult['vacancy']['experience'] }} лет |
+                {% endif %}
+                {% if vacancyResult['vacancy']['location'] %}{{ vacancyResult['vacancy']['location'] }} | {% endif %}Обновлено {{ vacancyResult['vacancy']['created'].strftime('%d.%m') }}
+              </span>
+              <span class="vacancyCardSalary">
+                {% if vacancyResult['vacancy']['salary']['from'] %}
+                <span>от {{ vacancyResult['vacancy']['salary']['from']|int }} ₽</span>
+                {% endif %}
+                {% if vacancyResult['vacancy']['salary']['to'] %}
+                <span>до {{ vacancyResult['vacancy']['salary']['to']|int }} ₽</span>
+                {% endif %}
+              </span>
+              {% if vacancyResult['company'] %}
+              <hr noshade size="1" style="margin: 0;">
+              <div style="display: flex; gap: 8px;">
+                <span style="flex-shrink: 0; width: 15%;">{{ vacancyResult['company']['title'] }}</span>
+                <div style="display: flex; flex-flow: column;">
+                  <span class="vacancyCardDescription"> {{ vacancyResult['vacancy']['description'] }}</span>
+                </div>
+              </div>
+              {% endif %}
+
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <br />
+    {% autoescape false %}
+    <div>{{ page_numerator }}</div>
+    {% endautoescape %}
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleBtn = document.getElementById('sorting-toggle');
+  const dropdown = document.getElementById('sorting-dropdown');
+
+  // Переключение видимости dropdown
+  toggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+    toggleBtn.querySelector('.dropdown-icon').style.transform =
+      dropdown.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
+  });
+
+  document.addEventListener('click', function() {
+    dropdown.classList.remove('show');
+    toggleBtn.querySelector('.dropdown-icon').style.transform = 'rotate(0)';
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sortOrderBtn = document.getElementById('sort-order-btn');
+
+  // Получаем текущий порядок из URL
+  const urlParams = new URLSearchParams(window.location.search);
+  let isAscending = urlParams.get('order') === 'asc';
+
+  // Устанавливаем начальное состояние
+  if (isAscending) {
+    sortOrderBtn.classList.add('asc');
+  }
+
+  sortOrderBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    isAscending = !isAscending;
+
+    // Переключаем класс
+    this.classList.toggle('asc', isAscending);
+
+    // Обновляем URL
+    updateSortOrder(isAscending);
+  });
+
+  function updateSortOrder(ascending) {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('order', ascending ? 'asc' : 'desc');
+    window.location.href = currentUrl.toString();
+  }
+});
+</script>
+
+{% endblock %}

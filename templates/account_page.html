@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %} Профиль {% endblock %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  {% if current_user.roleId == 3 %}
+    {% if not resumes %}
+  <div class="resumeCreateBlock">
+    <div class="resumeTextBlock">
+      <h2>Заполните резюме</h2>
+      <span>Так вы найдете работу гораздо быстрее!</span>
+    </div>
+    <div>
+      <a class="resumeButton" href="/resumes/create">Создать резюме</a>
+    </div>
+  </div>
+    {% endif %}
+
+  <div class="resumeRecomendationBlock">
+    <div class="resumeTextBlock">
+      <h2>Вакансии для вас</h2>
+    </div>
+  </div>
+  <div class="vacancyListBlock">
+    {% for vacancyResult in vacancies %}
+    <a href="{{ url_for('vacancies.vacancyPageRoute', vacancyId = vacancyResult['vacancy']['id']) }}">
+      <div class="vacancyCard">
+        <div class="vacancyCardContent">
+          <span class="vacancyCardTitle">{{ vacancyResult['vacancy']['title'] }}</span>
+          <span>
+            {% if vacancyResult['vacancy']['experience'] %}
+            Опыт от {{ vacancyResult['vacancy']['experience'] }} лет |
+            {% endif %}
+            Обновлено {{ vacancyResult['vacancy']['created'].strftime('%d.%m') }}
+          </span>
+          <span class="vacancyCardSalary">
+            {% if vacancyResult['vacancy']['salary']['from'] %}
+            <span>от {{ vacancyResult['vacancy']['salary']['from']|int }} ₽</span>
+            {% endif %}
+            {% if vacancyResult['vacancy']['salary']['to'] %}
+            <span>до {{ vacancyResult['vacancy']['salary']['to']|int }} ₽</span>
+            {% endif %}
+          </span>
+          {% if vacancyResult['company'] %}
+          <hr noshade size="1" style="margin: 0;">
+          <div style="display: flex; gap: 8px;">
+            <span style="flex-shrink: 0; width: 15%;">{{ vacancyResult['company']['title'] }}</span>
+            <div style="display: flex; flex-flow: column;">
+              <span class="vacancyCardDescription"> {{ vacancyResult['vacancy']['description'] }}</span>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  <br />
+    {% autoescape false %}
+    <div>{{ page_numerator }}</div>
+    {% endautoescape %}
+  {% else %}
+  {% if not company %}
+  <div class="resumeCreateBlock">
+    <div class="resumeTextBlock">
+      <h2>Создайте компанию</h2>
+      <span>Начните поиск сотруднков</span>
+    </div>
+    <div>
+      <a class="resumeButton" href="/companies/create">Создать компанию</a>
+    </div>
+  </div>
+  {% else %}
+  <div class="resumeCreateBlock">
+    <div class="resumeTextBlock">
+      <h2>Создайте вакансию</h2>
+      <span>Начните поиск сотруднков</span>
+    </div>
+    <div>
+      <a class="resumeButton" href="/vacancies/create">Создать вакансию</a>
+    </div>
+  </div>
+  {% endif %}
+  {% if company %}
+  <div class="company-card">
+    <h2>Ваша компания</h2>
+    <div class="vacanciesListBlock">
+          <div class="vacancyCard">
+            <a href="{{ url_for('companies.companyPageRoute', companyId = company.id) }}">
+              <div class="vacancyCardContent">
+              <span class="vacancyCardTitle">{{ company.title }}</span>
+              <hr noshade size="1" style="margin: 0;">
+              <div style="display: flex; gap: 8px;">
+                <span style="flex-shrink: 0; width: 15%;">{{ company.title }}</span>
+                <div style="display: flex; flex-flow: column;">
+                  <span class="vacancyCardDescription"> {{ company.description }}</span>
+                </div>
+              </div>
+            </div>
+            </a>
+            <div style="display: flex; gap: 15px;">
+              <a class="edit-button" href="{{ url_for('companies.editCompanyPageRoute', companyId = company.id) }}">Редактировать</a>
+            </div>
+          </div>
+      </div>
+    </div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

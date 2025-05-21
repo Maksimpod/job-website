@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+    <div class="responsesMainText">
+        <span>Кандидаты</span>
+    </div>
+
+    {% if responses %}
+    <div class="responsesMainBlock">
+        <div class="tabs">
+            <button class="redirect-button tab-button active" data-tab="all">Все</button>
+            <button class="redirect-button tab-button" data-tab="invitation">Приглашение</button>
+            <button class="redirect-button tab-button" data-tab="rejection">Отказ</button>
+            <button class="redirect-button tab-button" data-tab="pending">На рассмотрении</button>
+            <button class="redirect-button tab-button" data-tab="archived">Удаленные</button>
+        </div>
+        <div class="tab-content">
+        {% for candidate in responses %}
+                <div class="responsesCard" data-tab="all {% if candidate['response'].status == 1 %}invitation{% elif candidate['response'].status == 2 %}rejection{% elif candidate['response'].status == 3 %}archived{% else %}pending{% endif %}">
+                        <div class="responsesCardContent">
+                            <div class="responsesTitle">
+                                <a class="responsesTitleLink" href="/resumes/{{candidate['resume'].id}}">
+                                    <span>{{ candidate['resume'].position }}</span>
+                                </a>
+                                <span class="status-badge">
+                                    {% if candidate['response'].status == 1 %}
+                                      приглашение
+                                    {% elif candidate['response'].status == 2 %}
+                                      отказ
+                                    {% elif candidate['response'].status == 3 %}
+                                      удалено
+                                    {% else %}
+                                      на рассмотрении
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <span>{{ candidate['user'].fullName }} | {{ utility.calculate_age(candidate['user'].birthDate) }} | Стаж {% if candidate['workplaces'] %}{{ utility.calculate_work_years(candidate['workplaces']) }}{%else%}отсутствует{% endif %}</span>
+                            <span>Откликнулся {{ format_date(candidate['response'].created) }}</span>
+
+                            <div class="response-actions">
+                                <form method="POST" action="{{ url_for('candidates.cupdate_response_status') }}" class="d-inline">
+                                  <input type="hidden" name="vacancy_id" value="{{ candidate['response'].vacancyId }}">
+                                  <input type="hidden" name="user_id" value="{{ candidate['response'].userId }}">
+
+                                  <button type="submit" name="new_status" value="1"
+                                          class="responses-delete-button">
+                                    Пригласить
+                                  </button>
+
+                                  <button type="submit" name="new_status" value="2"
+                                          class="responses-delete-button">
+                                    Отказать
+                                  </button>
+                                </form>
+                          </div>
+                        </div>
+                    </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="responsesEmptyBlock">
+        <span>Здесь будут находиться отклики кандидатов. <br> Размещайте новые вакансии, чтобы получать больше откликов!</span>
+        <a href="/resumes" class="redirect-button">Искать кандидатов</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Удаляем активный класс у всех кнопок
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      // Добавляем активный класс текущей кнопке
+      this.classList.add('active');
+
+      const tabName = this.getAttribute('data-tab');
+      const cards = document.querySelectorAll('.responsesCard');
+
+      cards.forEach(card => {
+        if (tabName === 'all') {
+          card.style.display = 'block';
+        } else {
+          card.style.display = card.getAttribute('data-tab').includes(tabName) ? 'block' : 'none';
+        }
+      });
+    });
+  });
+});
+</script>
+
+{% endblock %}

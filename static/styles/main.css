@@ -1,0 +1,1246 @@
+* {
+  box-sizing: border-box;
+}
+
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code,
+dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header,
+hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp,
+section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+.clear {
+  clear: both;
+  height: 0px;
+}
+
+.hidden {
+  display: none;
+}
+
+.action {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--action-color);
+}
+
+.action:hover {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  color: var(--action-color-hover);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: Roboto;
+	background: var(--body-background);
+	-webkit-text-size-adjust: none;
+}
+
+header {
+  height: 60px;
+  width: 100%;
+  background: var(--top-menu-background);
+  user-select: none;
+}
+
+aside {
+  float: right;
+  width: 300px;
+  margin-left: 16px;
+}
+
+.pageContainer {
+  width: 1100px;
+  margin: auto;
+}
+
+.sectionBox {
+  margin: 16px 0;
+  padding: 20px;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--content-wrap-color);
+  background: var(--content-wrap-background);
+}
+
+.contentWrap {
+  float: left;
+  min-height: 550px;
+  min-width: 1100px;
+}
+
+.resultsWrap {
+  float: left;
+  min-height: 550px;
+  min-width: 784px;
+}
+
+footer {
+  width: 100%;
+  min-width: 1100px;
+  padding: 20px 0;
+  font-size: 15px;
+  font-weight: 300;
+  background: var(--bottom-footer-background);
+}
+
+footer .copyright {
+  float: left;
+  margin: 0 80px 0 40px;
+}
+
+.bottomMenu {
+  color: var(--bottom-footer-text-color);
+  display: flex;
+  justify-content: center;
+  user-select: none;
+}
+
+.bottomMenu li {
+  float: left;
+  display: block;
+  margin-right: 40px;
+}
+
+.bottomMenu a {
+  color: var(--bottom-menu-anchor);
+}
+
+.bottomMenu a:hover {
+  color: var(--bottom-menu-anchor-active);
+  text-decoration: underline;
+}
+
+
+
+.searchBlock {
+  float: right;
+  padding: 12px 16px;
+}
+
+.searchBlock input {
+  font-size: 1.2rem;
+  border: 1px solid gray;
+  width: 600px;
+}
+
+.searchBlock button {
+  background: white;
+  cursor: pointer;
+  padding: 3px 10px;
+  font-size: 1.0rem;
+  margin: 0 0 0 16px;
+}
+
+.searchBlock button:hover {
+  background: #f0f0f0;
+}
+
+.companyContactsBlock {
+  margin: 0 0 20px 0;
+}
+
+.companyContactsBlock h3 {
+  font-size: 1.0rem;
+}
+
+.companyContactsBlock li {
+  padding: 3px 0 0 20px;
+}
+
+
+
+/* Register Page */
+.registerWrap {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.registerBox {
+  color: var(--content-wrap-color);
+  background: var(--content-wrap-background);
+}
+
+.registerBox p {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.formBox{
+  width: 90%;
+  max-width: 450px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid;
+  border-radius: 30px;
+  border-color: #bbbbbb;
+  padding: 50px 60px 70px;
+  text-align: center;
+}
+
+.formBox h1 {
+  font-size: 30px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.regErrorMessage {
+  border: 2px solid red;
+  padding: 10px;
+}
+
+.fieldsMargin{
+  margin: 7px 0;
+}
+
+.role-selection {
+  margin: 1.5rem 0;
+}
+
+/* Заголовок */
+.role-selection label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Отдельная опция */
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-option input[type="radio"]:checked + label {
+  border-color: #0070FF;
+  font-weight: bold;
+}
+
+.role-option:has(input[type="radio"]:checked) {
+  border-color: #0070FF;
+}
+
+.role-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Кастомный radio */
+.role-option label {
+  position: relative;
+  padding-left: 1.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+}
+
+.role-option label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid #aaa;
+  border-radius: 50%;
+  background: white;
+}
+
+.role-option input[type="radio"]:checked + label:before {
+  border-color: #2c7be5;
+  background: #2c7be5;
+}
+
+.role-option label:after {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s ease;
+}
+
+.role-option input[type="radio"]:checked + label:after {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Контент опции */
+.role-option-content {
+  margin-left: 0.5rem;
+}
+
+.role-option-content h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.role-option-content p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.loginMessage {
+  margin-top: 10px;
+}
+
+.submit-button {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 95px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 7px;
+  margin-top: 2px;
+}
+
+.submit-button:hover {
+  color: white !important;
+  background: #0070FF;
+}
+
+.back-button{
+  position: absolute;
+  transform: translate(-330%, -120%);
+  border: 1px solid transparent;
+  border-radius: 25px;
+  padding: 5px 7px;
+}
+
+.back-button:hover {
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.back-button:visited {
+  color: inherit;
+}
+
+.form-field {
+  min-width:328px;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  padding: 7px;
+}
+
+.form-field:focus {
+  outline: none;
+  border-color: #0070FF;
+}
+
+
+.resumeBox {
+  color: var(--content-wrap-color);
+  background: var(--content-wrap-background);
+  margin: 15px 0px;
+  border: 1px solid;
+  border-radius: 15px;
+}
+
+.gender-options {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+}
+
+.gender-selection {
+  margin: 1rem 0;
+}
+
+.gender-selection label {
+  display: block;
+}
+
+.gender-option-content h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.gender-option-content p {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+select.form-field {
+  max-width: 328px;
+}
+
+.form-field-label {
+  margin-top: 7px;
+}
+
+/* Отдельная опция */
+.gender-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.gender-option input[type="radio"]:checked + label {
+  border-color: #0070FF;
+  font-weight: bold;
+}
+
+.gender-option:has(input[type="radio"]:checked) {
+  border-color: #0070FF;
+}
+
+
+.gender-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Кастомный radio */
+.gender-option label {
+  position: relative;
+  padding-left: 1.8rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+}
+
+.gender-option label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid #aaa;
+  border-radius: 50%;
+  background: white;
+}
+
+.gender-option input[type="radio"]:checked + label:before {
+  border-color: #2c7be5;
+  background: #2c7be5;
+}
+
+.gender-option label:after {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s ease;
+}
+
+.gender-option input[type="radio"]:checked + label:after {
+  transform: translateY(-50%) scale(1);
+}
+
+.vacancyHr,
+.resumeHr {
+  margin: 25px 0px;
+}
+
+.textArea {
+  resize: none;
+  max-height: 300px;
+  min-height: 80px;
+  width:100%;
+  overflow-y: hidden;
+}
+
+.resumeFormBox{
+  width: 90%;
+  max-width: 450px;
+  margin: 25px auto;
+  border: 1px solid;
+  border-radius: 30px;
+  border-color: #bbbbbb;
+  padding: 50px 60px 70px;
+  text-align: center;
+}
+
+.resumeFormBox h2 {
+  font-size: 30px;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.actual-label {
+  cursor: pointer;
+}
+
+.checkField {
+  text-align: left;
+}
+
+.workplace-block {
+  margin-top: 40px;
+}
+
+.add-workplace-button {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 55px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 7px;
+  margin-top: 2px;
+}
+
+.add-workplace-button:hover {
+  color: white;
+  background: #0070FF;
+}
+
+.yearsMargin {
+  display: flex;
+  gap: 8px;
+}
+
+.yearsMargin input {
+  min-width: 160px;
+}
+
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.skill-tag {
+  background: #e3f2fd;
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.skill-tag:hover {
+  background: #bbdefb;
+}
+
+.skill-tag::after {
+  content: " ×";
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+.skill-tag:hover::after {
+  opacity: 1;
+}
+
+.skill-input-group {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+}
+
+.resumeTextBlock {
+  display: flex;
+  flex-flow: column;
+}
+
+.resumeTextBlock span {
+  margin: 5px 0px;
+}
+
+.resumeTextBlock h2 {
+  font-size:25px;
+}
+
+.resumeCreateBlock {
+  padding: 30px 30px;
+  margin: 0 auto;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid gray;
+  margin-bottom: 20px;
+}
+
+.resumeButton {
+  color: black;
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 95px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 7px;
+  margin-top: 2px;
+}
+
+.resumeButton a:visited {
+  color: inherit;
+}
+
+.resumeButton:hover {
+  color: white;
+  background: #0070FF;
+}
+
+.position-card{
+  border: 2px solid;
+  border-radius: 15px;
+  width: 400px;
+  min-height: 100px;
+}
+
+.position-card:hover {
+  cursor: pointer;
+}
+
+.resume-card {
+  display: flex;
+  flex-flow: column;
+  width: 40%;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.resume-card h2 {
+  font-size: 25px;
+}
+
+.position-title {
+  margin: 7px;
+  font-size: 25px;
+}
+
+.resume-date {
+  margin-left: 7px;
+}
+
+.resumeIcon .userPhoto {
+  display: block;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: url('/images/userPhoto.png') no-repeat center / contain transparent;
+}
+
+.resumeHeader {
+  display: flex;
+}
+
+.resumeSubHeader {
+  display: flex;
+  flex-flow: column;
+  gap: 5px;
+}
+
+.resumeSubMain {
+  display: flex;
+  flex-flow: column;
+  font-size: 1.8rem;
+}
+
+.resumeCitizenshipBlock {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.resumeCitizenship {
+  min-width:128px;
+}
+
+.resumeExtraInfo {
+  margin-top: 15px;
+}
+
+.showContacts {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+  font-weight: bold;
+}
+
+.showContacts button {
+  max-width: 25%;
+}
+
+.resumeAbout h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.resumeExp h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.resumeWorkplace {
+  margin-bottom: 10px;
+}
+
+.resumeWorkplace h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.resumeWorkplace p {
+  margin-bottom: 4px;
+}
+
+.resumeEducations h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.resumeEdu {
+  margin-bottom: 10px;
+}
+
+.resumeEdu h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.ascDescIcon {
+  width: 35px;
+  height: 35px;
+  background: url('/images/ascDescIcon.png') no-repeat center / contain transparent;
+}
+
+.vacanciesMainBlock,
+.resumesMainBlock {
+  display:flex;
+  margin-top: 20px;
+}
+
+.resultsHeaderBlock {
+  border: 1px solid gray;
+}
+
+.vacanciesFilterBlock,
+.resumesFilterBlock {
+  width: 20%;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.resultsCountBlock {
+  float: left;
+  padding: 12px 16px;
+}
+
+.resultsCountBlock h2,
+.resumesCountBlock h2 {
+  font-size: 1.2rem;
+}
+
+.resultsSortingBlock {
+  display: flex;
+  padding: 8px 16px;
+}
+
+.resultsSort {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  width: 25%;
+}
+
+.vacancyTitle {
+  font-size: 1.8rem;
+}
+
+.vacancySalary {
+  font-size: 1.8rem;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+.vacancyDescription {
+  margin: 20px;
+  line-height: 1.5;
+}
+
+.vacancyDescription li {
+  padding: 0 0 0 16px;
+}
+
+.vacanciesListBlock,
+.resumesListBlock {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  gap: 12px;
+}
+
+.vacanciesListBlock a,
+.resumesListBlock a {
+  color: black;
+}
+
+.vacanciesListBlock a:visited,
+.resumesListBlock a:visited {
+  color: inherit;
+}
+
+.vacanciesListBlock a:hover .vacancyCardTitle,
+.resumesListBlock a:hover .resumeCardTitle {
+  text-decoration: underline;
+}
+
+.vacancyCard:hover,
+.resumeCard:hover {
+  border: 2px solid #0070FF;
+  cursor: pointer;
+}
+
+.vacancyCard,
+.resumeCard {
+  border: 2px solid gray;
+  border-radius: 15px;
+  min-height: 150px;
+  padding: 15px;
+}
+
+.vacancyCardTitle,
+.resumeCardTitle {
+  font-size: 1.2rem;
+}
+
+.vacancyCardContent,
+.resumeCardContent {
+  display: flex;
+  flex-flow: column;
+}
+
+.vacancyCardContent span,
+.resumeCardContent span {
+  margin: 3px 0px;
+}
+
+.vacancyCardSalary,
+.resumeCardSalary {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.vacancyCardDescription {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.resumeCardLastWorkplace {
+  font-weight: bold;
+}
+
+.sorting-selector {
+  position: relative;
+  display: inline-block;
+  font-family: Arial, sans-serif;
+  min-width: 160px;
+}
+
+.sorting-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.sorting-button:hover {
+  background: #eee;
+}
+
+.dropdown-icon {
+  transition: transform 0.2s;
+}
+
+.sorting-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: none;
+  z-index: 10;
+  margin-top: 4px;
+}
+
+.sorting-dropdown.show {
+  display: block;
+}
+
+.sorting-option {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.sorting-option:hover {
+  background-color: #f5f5f5;
+}
+
+.sorting-option.active {
+  color: #0066cc;
+  font-weight: bold;
+}
+
+.accountSearchBlock {
+  padding: 30px 30px;
+  margin: 0 auto;
+  width: 70%;
+  border: 1px solid gray;
+  margin-bottom: 20px;
+}
+
+.accountSearchForm {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.vacancyListBlock {
+  display: flex;
+  flex-flow: column;
+  width: 80%;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.vacancyListBlock a {
+  color: black;
+}
+
+
+.vacancyListBlock a:visited {
+  color: inherit;
+}
+
+.vacancyListBlock a:hover .vacancyCardTitle {
+  text-decoration: underline;
+}
+
+.vacancyCard:hover {
+  border: 2px solid #0070FF;
+}
+
+.vacancyCard {
+  border: 2px solid gray;
+  border-radius: 15px;
+  min-height: 150px;
+  padding: 15px;
+}
+
+.vacancyCard:hover {
+  cursor: pointer;
+}
+
+.vacancyCardContent {
+  display: flex;
+  flex-flow: column;
+}
+
+.vacancyCardContent span {
+  margin: 3px 0px;
+}
+
+.vacancyCardTitle {
+  font-size: 1.2rem;
+}
+
+.resumeRecomendationBlock {
+  margin: 0 auto;
+  width: 70%;
+  margin-bottom: 20px;
+}
+
+.sort-order-toggle {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.sort-order-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.sort-order-button:hover {
+  background-color: #f5f5f5;
+}
+
+.sort-icon {
+  background: url('/images/ascDescIcon.png') no-repeat center / contain transparent;
+  width: 30px;
+  height: 30px;
+  transform-origin: center;
+  display: block;
+}
+
+.sort-order-button.asc .sort-icon {
+  transform: rotate(180deg) scaleX(-1) !important;
+}
+
+.redirect-button {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 55px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.redirect-button:hover {
+  color: white !important;
+  background: #0070FF;
+}
+
+.redirect-button:visited {
+  color: black;
+}
+
+.responsesMainText {
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.responsesEmptyBlock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.responsesEmptyBlock span {
+  font-size: 1.2rem;
+}
+
+.responsesMainBlock span {
+  font-size: 1rem;
+}
+
+.responsesCard {
+  border: 2px solid gray;
+  border-radius: 15px;
+  min-height: 100px;
+  padding: 15px;
+  margin-bottom: 10px;
+  max-width: 1060px;
+}
+
+.responsesCardContent {
+  display: flex;
+  flex-flow: column;
+}
+
+.responsesCardContent span {
+  margin: 3px 0px;
+}
+
+.responsesTitleLink {
+  text-decoration: underline;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.responsesTitleLink span {
+  font-size: 1.1rem;
+}
+
+.responsesTitleLink:hover {
+  color: #0070ff !important;
+}
+
+.responsesTitleLink:visited {
+  color: blue;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tab-button.active {
+  color: white !important;
+  background: #0070FF;
+}
+
+.status-badge {
+  flex-shrink: 0;
+  background: #efefef;
+  padding: 0px 5px;
+}
+
+.responsesTitle {
+  display: flex;
+  gap: 7px;
+}
+
+.responses-delete-button {
+  border: 1px solid #0070FF;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.responses-delete-button:hover {
+  color: white !important;
+  background: #0070FF;
+}
+
+.resumeSkillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 -4px;
+  padding: 4px 0;
+}
+
+.resumeSkills h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.resumeSkill {
+  background: #efefef;
+  padding: 5px 12px;
+}
+
+.response-button {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 65px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.response-button:hover {
+  color: white;
+  background: #0070FF;
+}
+
+.responseBlock {
+  margin-top: 15px;
+}
+
+.response-text {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 25px;
+}
+
+.edit-button {
+  border: 1px solid #0070FF;
+  background: white;
+  padding: 10px 55px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 7px;
+}
+
+.edit-button:hover {
+  color: white !important;
+  background: #0070FF;
+}
+
+.edit-button:visited {
+  color: black;
+}
+
+.company-card {
+  display: flex;
+  flex-flow: column;
+  width: 70%;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.company-card h2 {
+  font-size: 25px;
+}

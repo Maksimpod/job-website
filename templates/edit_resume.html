@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="resumeBox">
+    <div class="resumeFormBox">
+      <h2>Основная информация</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="regErrorMessage">
+              {% for message in messages %}
+                <li style="color: red;">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p class="fieldsMargin">
+              {{ form.surname(size=32, class="form-field") }}<br>
+              {% for error in form.surname.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.name(size=32, class="form-field") }}<br>
+              {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.patro(size=32, class="form-field") }}<br>
+              {% for error in form.patro.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <div class="gender-selection">
+                {{ form.gender.label }}<br>
+                <div class="gender-options">
+                    {% for subfield in form.gender %}
+                        <label class="gender-option">
+                            {{ subfield }}
+                            <div class="gender-option-content">
+                                <h4>{{ subfield.label.text }}</h4>
+                            </div>
+                        </label>
+                    {% endfor %}
+                </div>
+                {% for error in form.gender.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            <p class="fieldsMargin">
+                {{ form.tel.label }}<br>
+              {{ form.tel(size=32, class="form-field form-field-label") }}<br>
+              {% for error in form.tel.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+              {{ form.city(size=32, class="form-field") }}<br>
+              {% for error in form.city.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+                {{ form.bdate.label }}<br>
+              {{ form.bdate(class="form-field form-field-label") }}<br>
+              {% for error in form.bdate.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <p class="fieldsMargin">
+                {{ form.country.label }}<br>
+              {{ form.country(class="form-field form-field-label") }}<br>
+              {% for error in form.country.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}
+            </p>
+            <hr class="resumeHr">
+
+            <h2>Опыт работы</h2>
+            <div id="workplaces-container">
+            {% for workplace in form.workplaces %}
+                {{ workplace.csrf_token() }}
+                <div class="workplace-block">
+                <p class="fieldsMargin">
+                  {{ workplace.position(size=32, class="form-field") }}<br>
+                  {% for error in workplace.position.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p class="fieldsMargin">
+                  {{ workplace.title(size=32, class="form-field") }}<br>
+                  {% for error in workplace.title.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p class="fieldsMargin">
+                  {{ workplace.desc(class="form-field textArea") }}<br>
+                </p>
+                <p class="fieldsMargin yearsMargin">
+                  {{ workplace.beginyear(class="form-field year-input") }} {{ workplace.endyear(class="form-field year-input") }}<br>
+                    {% for error in workplace.beginyear.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p class="fieldsMargin checkField">
+                  {{ workplace.actual }} {{ workplace.actual.label(class="actual-label") }}<br>
+                    {% for error in workplace.actual.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                    <button name="remove-workplace" class="add-workplace-button" value="{{ loop.index0 }}">Удалить</button>
+                </div>
+            {% endfor %}
+                </div>
+            <button value="add-workplace" name="add-workplace" class="add-workplace-button">Добавить место работы</button>
+
+            <hr class="resumeHr">
+
+            <h2>Образование</h2>
+            <div>
+            {% for education in form.educations %}
+                {{ education.csrf_token() }}
+                <div class="workplace-block">
+                <p class="fieldsMargin">
+                  {{ education.title(size=32, class="form-field") }}<br>
+                  {% for error in education.title.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p class="fieldsMargin">
+                  {{ education.spec(size=32, class="form-field") }}<br>
+                  {% for error in education.spec.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                <p class="fieldsMargin">
+                  {{ education.endyear(class="form-field year-input") }} <br>
+                    {% for error in education.endyear.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                  {% endfor %}
+                </p>
+                    <button name="remove-education" class="add-workplace-button" value="{{ loop.index0 }}">Удалить</button>
+                </div>
+            {% endfor %}
+                </div>
+            <button value="add-education" name="add-education" class="add-workplace-button">Добавить образование</button>
+                        <hr class="resumeHr">
+
+            <h2>Навыки</h2>
+            <div class="skills-container">
+              <div id="skills-tags" class="skills-tags">
+              </div>
+
+              <div class="skill-input-group">
+                <input
+                  type="text"
+                  id="skill-input"
+                  class="form-control form-field"
+                  placeholder="Введите навык"
+                >
+                <button
+                  type="button"
+                  id="add-skill-btn"
+                  class="btn btn-primary submit-button"
+                >
+                  Добавить
+                </button>
+              </div>
+
+              <input type="hidden" name="skills" id="skills-data">
+            </div>
+            <hr class="resumeHr">
+
+            <h2>Обо мне</h2>
+            <div>
+                {{ form.about.csrf_token() }}
+                <p class="fieldsMargin">
+                    {{ form.about.about(class="form-field textArea") }} <br>
+                </p>
+            </div>
+            <hr class="resumeHr">
+
+            <h2>Желаемая должность</h2>
+            <div style="margin-bottom: 25px;">
+                <p class="fieldsMargin">
+                    {{ form.position.csrf_token() }}
+                    {{ form.position.pos(class="form-field") }} <br>
+                    {% for error in form.position.pos.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                </p>
+                <p class="fieldsMargin">
+                    {{ form.position.salary(class="form-field number-input") }} <br>
+                </p>
+            </div>
+
+            <p>{{ form.submit(class="submit-button") }}</p>
+        </form>
+    </div>
+</div>
+<script>
+// Ограничение высоты textArea
+
+document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('textArea')) {
+    autoResizeTextarea(event.target);
+  }
+});
+
+function autoResizeTextarea(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = Math.min(textarea.scrollHeight, 300) + 'px';
+  textarea.style.overflowY = textarea.scrollHeight > 300 ? 'auto' : 'hidden';
+}
+
+function validateYearInput(input) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+  if (input.value.length > 4) input.value = input.value.slice(0, 4);
+  const year = parseInt(input.value) || 0;
+  if (year > 2025) input.value = 2025;
+  if (year < 1950 && input.value.length === 4) input.value = 1950;
+}
+
+function validateNumberInput(input) {
+  input.value = input.value.replace(/[^0-9]/g, '');
+  if (input.value.length > 7) input.value = input.value.slice(0, 7);
+  const number = parseInt(input.value) || 0;
+  if (number > 1000000) input.value = 1000000;
+}
+
+// Добавление слушателей обработчиков для всех объектов с классом year-input
+document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('year-input')) {
+    validateYearInput(event.target);
+  }
+});
+
+// Добавление слушателей обработчиков для всех объектов с классом number-input
+document.addEventListener('input', function(event) {
+  if (event.target.classList.contains('number-input')) {
+    validateNumberInput(event.target);
+  }
+});
+
+// Навыки
+document.addEventListener('DOMContentLoaded', function() {
+  const skillInput = document.getElementById('skill-input');
+  const addSkillBtn = document.getElementById('add-skill-btn');
+  const skillsTags = document.getElementById('skills-tags');
+  const skillsData = document.getElementById('skills-data');
+
+  window.skillsJson = '{{ skills_json|safe }}';
+
+  let skills = [];
+
+  if (typeof window.skillsJson !== 'undefined') {
+    skills = JSON.parse(window.skillsJson);
+    localStorage.setItem('resumeSkills', JSON.stringify(skills));
+  }
+
+  updateSkillsDisplay();
+
+  // Добавление навыка
+  addSkillBtn.addEventListener('click', function() {
+    const skill = skillInput.value.trim();
+
+    if (!skill || !isNaN(skill)) {
+        return;
+    }
+
+    const skillLower = skill.toLowerCase();
+
+    const isDuplicate = skills.some(existingSkill =>
+        existingSkill.toLowerCase() === skillLower
+    );
+
+    if (!isDuplicate) {
+        skills.push(skill);
+        saveSkills();
+        updateSkillsDisplay();
+        skillInput.value = '';
+    }
+  });
+
+  function updateSkillsDisplay() {
+    skillsTags.innerHTML = '';
+    skillsData.value = skills.join(',');
+
+    skills.forEach((skill, index) => {
+      const tag = document.createElement('span');
+      tag.className = 'skill-tag';
+      tag.textContent = skill;
+      tag.dataset.index = index;
+
+      skillsTags.appendChild(tag);
+    });
+  }
+
+  function saveSkills() {
+    localStorage.setItem('resumeSkills', JSON.stringify(skills));
+  }
+
+  skillsTags.addEventListener('click', function(e) {
+    if (e.target.classList.contains('skill-tag')) {
+      const index = parseInt(e.target.dataset.index);
+      skills.splice(index, 1);
+      saveSkills();
+      updateSkillsDisplay();
+    }
+  });
+});
+</script>
+{% endblock %}
+

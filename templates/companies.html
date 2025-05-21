@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %} Компании {% endblock %}
+
+{% block content %}
+<div class="contentWrap sectionBox">
+  <div>
+    <div class="resultsHeaderBlock">
+      <div class="resultsCountBlock">
+        <h2>Найдено {{ total_companies }} компаний</h2>
+      </div>
+      <div class="searchBlock">
+        <form method="get" style="display: flex;">
+          <input name="search" placeholder="" value="{{ search_text }}" />
+          <button type="submit">Искать</button>
+        </form>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="vacanciesMainBlock">
+      <div class="vacanciesListBlock">
+        {% for companyResult in companies %}
+        <a href="{{ url_for('companies.companyPageRoute', companyId = companyResult['company']['id']) }}">
+          <div class="vacancyCard">
+            <div class="vacancyCardContent">
+              <span class="vacancyCardTitle">{{ companyResult['company']['title'] }}</span>
+              {% if companyResult['company'] %}
+              <hr noshade size="1" style="margin: 0;">
+              <div style="display: flex; gap: 8px;">
+                <span style="flex-shrink: 0; width: 15%;">{{ companyResult['company']['title'] }}</span>
+                <div style="display: flex; flex-flow: column;">
+                  <span class="vacancyCardDescription"> {{ companyResult['company']['description'] }}</span>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    <br />
+    {% autoescape false %}
+    <div>{{ page_numerator }}</div>
+    {% endautoescape %}
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleBtn = document.getElementById('sorting-toggle');
+  const dropdown = document.getElementById('sorting-dropdown');
+
+  // Переключение видимости dropdown
+  toggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+    toggleBtn.querySelector('.dropdown-icon').style.transform =
+      dropdown.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
+  });
+
+  document.addEventListener('click', function() {
+    dropdown.classList.remove('show');
+    toggleBtn.querySelector('.dropdown-icon').style.transform = 'rotate(0)';
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sortOrderBtn = document.getElementById('sort-order-btn');
+
+  // Получаем текущий порядок из URL
+  const urlParams = new URLSearchParams(window.location.search);
+  let isAscending = urlParams.get('order') === 'asc';
+
+  // Устанавливаем начальное состояние
+  if (isAscending) {
+    sortOrderBtn.classList.add('asc');
+  }
+
+  sortOrderBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    isAscending = !isAscending;
+
+    // Переключаем класс
+    this.classList.toggle('asc', isAscending);
+
+    // Обновляем URL
+    updateSortOrder(isAscending);
+  });
+
+  function updateSortOrder(ascending) {
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('order', ascending ? 'asc' : 'desc');
+    window.location.href = currentUrl.toString();
+  }
+});
+</script>
+
+{% endblock %}
